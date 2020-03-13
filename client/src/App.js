@@ -9,7 +9,7 @@ function App() {
     <div>
       <AppNavbar/>
       <ShoppingList/>
-      <h1>Hello</h1>
+      <h1>qwerty</h1>
     </div>
   );
 }

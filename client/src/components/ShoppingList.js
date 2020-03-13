@@ -33,25 +33,42 @@ class ShoppingList extends Component {
                 </Button>
 
                 <ListGroup>
-                    <TransitionGroup className="shopping-list">
-                        {items.map(({ id, name, index }) => (
-                            <ListGroupItem key={index}>
-                                <Button 
-                                    className="remove-btn"
-                                    color="danger"
-                                    size="sm"
-                                    style={{ marginRight: '1em' }}
-                                    onClick={() => {
-                                        this.setState(state => ({
-                                            items: state.items.filter(item => item.id !== id)
-                                        }))
-                                    }}
-                                >&times;</Button>
-                                {name}
-                            </ListGroupItem>
-                        ))}
-                    </TransitionGroup>
+                    {items.map((part, index) =>
+                        <ListGroupItem>
+                            <Button
+                                className="remove-btn"
+                                color="danger"
+                                size="sm"
+                                style={{ marginRight: '1em' }}
+                                onClick={() => {
+                                    this.setState(state => ({
+                                        items: state.items.filter(item => item.id !== part.id)
+                                    }))
+                                }}
+                            >&times;</Button>
+                            {part.name}
+                        </ListGroupItem>
+                    )}
                 </ListGroup>
+
+                {/* <ListGroup>
+                    {items.map(({ id, name }) => (
+                        <ListGroupItem>
+                            <Button
+                                className="remove-btn"
+                                color="danger"
+                                size="sm"
+                                style={{ marginRight: '1em' }}
+                                onClick={() => {
+                                    this.setState(state => ({
+                                        items: state.items.filter(item => item.id !== id)
+                                    }))
+                                }}
+                            >&times;</Button>
+                            {name}
+                        </ListGroupItem>
+                    ))}
+                </ListGroup> */}
             </Container>
         )
     }
