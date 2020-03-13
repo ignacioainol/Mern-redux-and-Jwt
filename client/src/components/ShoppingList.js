@@ -21,15 +21,15 @@ class ShoppingList extends Component {
             <Container>
                 
                 <ListGroup>
-                    {items.map((part, index) =>
-                        <ListGroupItem key={index}>
+                    {items.map(({ _id, name}) =>
+                        <ListGroupItem key={_id}>
                             <Button
                                 className="remove-btn"
                                 color="danger"
                                 size="sm"
                                 style={{ marginRight: '1em' }}
-                                onClick={ this.onDeleteClick.bind(this, part.id)}>&times;</Button>
-                            {part.name}
+                                onClick={ this.onDeleteClick.bind(this, _id)}>&times;</Button>
+                            {name}
                         </ListGroupItem>
                     )}
                 </ListGroup>
