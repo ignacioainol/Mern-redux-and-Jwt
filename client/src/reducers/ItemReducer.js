@@ -1,5 +1,7 @@
-import uuid from 'uuid'
-import { GET_ITEMS, ADD_ITEM, DELETE_ITEM, ITEMS_LOADING } from '../actions/types'
+import { GET_ITEMS,
+         ADD_ITEM, 
+         DELETE_ITEM, 
+         ITEMS_LOADING } from '../actions/types'
 
 
 const initialState = {
