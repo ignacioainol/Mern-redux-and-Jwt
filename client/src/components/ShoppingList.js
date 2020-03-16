@@ -7,6 +7,12 @@ import PropTypes from 'prop-types'
 
 class ShoppingList extends Component {
 
+    static propTypes = {
+        getItems: PropTypes.func.isRequired,
+        item: PropTypes.object.isRequired,
+        isAuthenticated: PropTypes.bool
+    }
+
     componentDidMount() {
         this.props.getItems()
     }
@@ -19,16 +25,20 @@ class ShoppingList extends Component {
         const { items } = this.props.item;
         return (
             <Container>
-                
+
                 <ListGroup>
-                    {items.map(({ _id, name}) =>
+                    {items.map(({ _id, name }) =>
                         <ListGroupItem key={_id}>
-                            <Button
-                                className="remove-btn"
-                                color="danger"
-                                size="sm"
-                                style={{ marginRight: '1em' }}
-                                onClick={ this.onDeleteClick.bind(this, _id)}>&times;</Button>
+                            {this.props.isAuthenticated ?
+                                <Button
+                                    className="remove-btn"
+                                    color="danger"
+                                    size="sm"
+                                    style={{ marginRight: '1em' }}
+                                    onClick={this.onDeleteClick.bind(this, _id)}>&times;</Button> :
+                                null
+                            }
+
                             {name}
                         </ListGroupItem>
                     )}
@@ -38,13 +48,9 @@ class ShoppingList extends Component {
     }
 }
 
-ShoppingList.propTypes = {
-    getItems: PropTypes.func.isRequired,
-    item: PropTypes.object.isRequired
-}
-
 const mapStateToProps = (state) => ({
-    item: state.item
+    item: state.item,
+    isAuthenticated: state.auth.isAuthenticated
 });
 
 
