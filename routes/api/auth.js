@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const config = require('config');
 const jwt = require('jsonwebtoken');
-const auth =  require('../../middleware/auth');
+const auth = require('../../middleware/auth');
 
 //user Model
 const User = require('../../models/User');
@@ -13,6 +13,8 @@ const User = require('../../models/User');
 //@access Public
 router.post('/', (req, res) => {
     const { email, password } = req.body;
+
+    console.log(req.body);
 
     //simple validation
     if (!email || !password) {
@@ -28,7 +30,7 @@ router.post('/', (req, res) => {
             //validate password
             bcrypt.compare(password, user.password)
                 .then(isMatch => {
-                    if(!isMatch) return res.status(400).json({ msg: 'Invalid credentias '});
+                    if (!isMatch) return res.status(400).json({ msg: 'Invalid credentias ' });
 
                     jwt.sign(
                         { id: user.id },
@@ -46,14 +48,14 @@ router.post('/', (req, res) => {
                             })
                         }
                     )
-                }) 
+                })
         })
 })
 
 //@route GET api/auth/user
 //@desc GET user data
 //@access Private
-router.get('/user', auth, (req,res) => {
+router.get('/user', auth, (req, res) => {
     User.findById(req.user.id)
         .select('-password')
         .then(user => res.json(user))
