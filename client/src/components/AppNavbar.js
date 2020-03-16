@@ -15,6 +15,7 @@ import {
 } from 'reactstrap';
 
 import RegisterModel from './auth/RegisterModal';
+import Logout from './auth/Logout';
 
 const AppNavbar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +35,9 @@ const AppNavbar = (props) => {
             <NavItem>
               {/* <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink> */}
               <RegisterModel />
+            </NavItem>
+            <NavItem>
+              <Logout />
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
