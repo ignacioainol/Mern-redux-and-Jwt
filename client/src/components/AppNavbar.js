@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Component, Fragment } from 'react';
 import {
   Collapse,
   Navbar,
@@ -13,55 +13,74 @@ import {
   DropdownItem,
   NavbarText
 } from 'reactstrap';
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
-import RegisterModel from './auth/RegisterModal';
+import RegisterModal from './auth/RegisterModal';
 import Logout from './auth/Logout';
+import LoginModal from './auth/LoginModal';
 
-const AppNavbar = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
+class AppNavbar extends Component {
+  state = {
+    isOpen: false
+  }
 
-  const toggle = () => setIsOpen(!isOpen);
+  static propTypes = {
+    auth: PropTypes.object.isRequired
+  }
 
-  return (
-    <div>
-      <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">reactstrap</NavbarBrand>
-        <NavbarToggler onClick={toggle} />
-        <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
-            <NavItem>
-              <NavLink href="/components/">Components</NavLink>
-            </NavItem>
-            <NavItem>
-              {/* <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink> */}
-              <RegisterModel />
-            </NavItem>
-            <NavItem>
-              <Logout />
-            </NavItem>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Options
-                </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>
-                  Option 1
-                  </DropdownItem>
-                <DropdownItem>
-                  Option 2
-                  </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>
-                  Reset
-                  </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </Nav>
-          <NavbarText>Simple Text</NavbarText>
-        </Collapse>
-      </Navbar>
-    </div>
-  );
+  toggle = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    })
+  }
+
+  render() {
+    const { isAuthenticated, user } = this.props.auth;
+
+    const authLinks = (
+      <Fragment>
+        <NavItem>
+          <span className="navbar-text mr-3">
+            <strong>{user ? `Welcome ${user.name}` : null}</strong>
+          </span>
+        </NavItem>
+        <NavItem>
+          <Logout />
+        </NavItem>
+      </Fragment>
+    )
+
+    const guestLinks = (
+      <Fragment>
+        <NavItem>
+          <RegisterModal />
+        </NavItem>
+        <NavItem>
+          <LoginModal />
+        </NavItem>
+      </Fragment>
+    )
+
+    return (
+      <div>
+        <Navbar color="light" light expand="md">
+          <NavbarBrand href="/">reactstrap</NavbarBrand>
+          <NavbarToggler onClick={this.state.toggle} />
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav className="mr-auto" navbar>
+              {isAuthenticated ? authLinks : guestLinks}
+            </Nav>
+            <NavbarText>Simple Text</NavbarText>
+          </Collapse>
+        </Navbar>
+      </div>
+    );
+  }
 }
 
-export default AppNavbar;
+const mapStateToProps = state => ({
+  auth: state.auth
+})
+
+export default connect(mapStateToProps, null)(AppNavbar);
